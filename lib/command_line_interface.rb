@@ -1,5 +1,7 @@
 class CommandLineInterface
 
+attr_accessor :name
+
   def welcome_customer
     puts "Welcome to Pizza Maker!"
   end
@@ -24,10 +26,18 @@ class CommandLineInterface
 
   def display_special_menu
     puts "Here is our Speciality Menu. Please select a number."
-    puts "1. MeatZZa"
-    puts "2. ExtravaganZZa"
-    puts "3. Philly Cheese"
-    puts "4. Honolulu"
+    Pizza.all.each do |pizza|
+      @name = pizza.name
+      id = pizza.id
+      puts "#{id}. #{name}"
+      binding.pry
+    end
+  end
+
+  def topping_list
+    puts "You selected #{@name}! These are the toppings on the pizza:"
+    puts ""
+
   end
 
   def display_custom_menu
@@ -56,6 +66,7 @@ class CommandLineInterface
       show_menu_selection
       customer_selection = get_customer_selection
       determine_customer_selection(customer_selection)
+      pizza_selection = get_customer_selection
     end
     binding.pry
   end
