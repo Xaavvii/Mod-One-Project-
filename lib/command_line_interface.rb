@@ -1,6 +1,6 @@
 class CommandLineInterface
 
-attr_accessor :id
+attr_accessor :id,:new_pizza
 
   def welcome_customer
     puts "Welcome to Pizza Maker!"
@@ -26,10 +26,16 @@ attr_accessor :id
 
   def display_special_menu
     puts "Here is our Speciality Menu. Please select a number."
+
     Pizza.all.each do |pizza|
-      puts "#{pizza.id}. #{pizza.name}"
+      array = []
+      array << "#{pizza.id}. #{pizza.name}"
+      puts array[0]
+      puts array[1]
+      puts array[2]
+      puts array[3]
+      end
     end
-  end
 
   def topping_list(pizza_selection)
     @id = pizza_selection.to_i
@@ -41,12 +47,26 @@ attr_accessor :id
   end
 
   def display_custom_menu
-    puts "Please select the number of the topping you want to add to your pizza!"
-    Topping.all.map do |topping|
-      puts "#{topping.id}. #{topping.name}"
+    topping_selection = ""
+    @new_pizza = Pizza.create(name: "custom")
+
+    while topping_selection != "done"
+      puts "Please select the number of the topping you want to add to your pizza!"
+      puts "Enter 'done' when you are finished"
+
+      Topping.all.map do |topping|
+        puts "#{topping.id}. #{topping.name}"
+      end
+
+      topping_selection = gets.chomp
+      if topping_selection != "done"
+        topping = Topping.find(topping_selection)
+        PizzaTopping.new(pizza_id: pizza.id, topping_id: topping.id)
+        puts "#{topping.name} has/have been added to your pizza."
+      end
     end
-    topping_selection = gets.chomp
-    puts "#{Topping.find(topping_selection).name} has/have been added to your pizza."
+
+    pizza
   end
 
   def create_pizza
@@ -87,8 +107,10 @@ attr_accessor :id
       until pizza_selection == "1" || pizza_selection == "2" || pizza_selection == "3" || pizza_selection == "4" do
         determine_customer_selection(customer_selection)
         pizza_selection = get_customer_selection
-        if pizza_selection  != "1" || pizza_selection != "2" || pizza_selection != "3" || pizza_selection != "4"
-          puts "Wrong input, please try again."
+        valid_pizza_options = ["1", "2", "3", "4"]
+        if !valid_pizza_options.include?(pizza_selection)
+          raise "Alex"
+          puts "Wrong input, please try again!!!!"
         end
       end
     end
@@ -98,8 +120,8 @@ attr_accessor :id
     elsif customer_selection == "2"
       puts "Sorry, custom menu not available"
     end
-
-    binding.pry
+    #
+    # binding.pry
 
 
   end
