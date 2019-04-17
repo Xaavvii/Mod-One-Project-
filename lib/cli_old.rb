@@ -56,13 +56,12 @@ attr_accessor :id
   end
 
   def determine_pizza_selection(pizza_selection)
-    if pizza_selection.to_i <= Pizza.all.length
+    if pizza_selection <= Pizza.all.length
 
     else
       puts "Wrong input, please try again."
     end
   end
-
 
   def run
     customer_selection = ""
@@ -74,17 +73,15 @@ attr_accessor :id
       offer_specialty_or_custom_build_pizza(customer_name)
       show_menu_selection
       customer_selection = get_customer_selection
-      until pizza_selection == "1" || pizza_selection == "2" || pizza_selection == "3" || pizza_selection == "4" do
-        determine_customer_selection(customer_selection)
-        pizza_selection = get_customer_selection
-        if pizza_selection  != "1" || pizza_selection != "2" || pizza_selection != "3" || pizza_selection != "4"
-          puts "Wrong input, please try again."
-        end
-      end
+      # determine_customer_selection(pizza_selection)
+      # until pizza_selection == "1" || pizza_selection == "2" || pizza_selection  ==  "3" || pizza_selection == "4" do
+      #   pizza_selection = get_customer_selection
+      # end
     end
 
     if customer_selection == "1"
       topping_list(pizza_selection)
+
     elsif customer_selection == "2"
       puts "Sorry, custom menu not available"
     end
