@@ -41,7 +41,17 @@ attr_accessor :id
   end
 
   def display_custom_menu
-    puts "Custom Menu not yet available."
+    puts "Please select the number of the topping you want to add to your pizza!"
+    Topping.all.map do |topping|
+      puts "#{topping.id}. #{topping.name}"
+    end
+    topping_selection = gets.chomp
+    puts "#{Topping.find(topping_selection).name} has/have been added to your pizza."
+  end
+
+  def create_pizza
+    custom_pizza = Pizza.new(name: null)
+    PizzaTopping.new(pizza_id: custom_pizza.id, topping_id: 1)
   end
 
   def determine_customer_selection(customer_selection)
