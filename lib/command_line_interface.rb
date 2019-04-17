@@ -48,10 +48,10 @@ attr_accessor :id,:new_pizza
 
   def display_custom_menu
     topping_selection = ""
-    @new_pizza = Pizza.create(name: "custom")
+    @new_pizza = Pizza.create(name: "Custom Pizza")
 
     while topping_selection != "done"
-      puts "Please select the number of the topping you want to add to your pizza!"
+      puts "Please enter the number of the topping you want to add to your pizza!"
       puts "Enter 'done' when you are finished"
 
       Topping.all.map do |topping|
@@ -61,12 +61,27 @@ attr_accessor :id,:new_pizza
       topping_selection = gets.chomp
       if topping_selection != "done"
         topping = Topping.find(topping_selection)
-        PizzaTopping.new(pizza_id: pizza.id, topping_id: topping.id)
+        PizzaTopping.new(pizza_id: @new_pizza.id, topping_id: topping.id)
+        @new_pizza.toppings << topping
         puts "#{topping.name} has/have been added to your pizza."
+      else
+        puts "Do you want to name your pizza? Please enter 'yes' / 'no'"
+        yes_no = gets.chomp
+          if yes_no == 'yes'
+            puts "Please name your pizza:"
+            new_name = gets.chomp
+            @new_pizza.name = new_name
+            @new_pizza.save
+            # binding.pry
+            puts "Sweetza! You named your pizza #{new_name}"
+          else
+            puts "Pizza's don't need no name anyway! Here is what's on your pizza:"
+            puts @new_pizza.toppings.map {|topping| topping.name}
+            
+            # binding.pry
+          end
       end
     end
-
-    pizza
   end
 
   def create_pizza
@@ -109,7 +124,7 @@ attr_accessor :id,:new_pizza
         pizza_selection = get_customer_selection
         valid_pizza_options = ["1", "2", "3", "4"]
         if !valid_pizza_options.include?(pizza_selection)
-          raise "Alex"
+          # raise "Alex"
           puts "Wrong input, please try again!!!!"
         end
       end
