@@ -3,11 +3,11 @@ class CommandLineInterface
 attr_accessor :id,:new_pizza,:customer_name
 
   def welcome_customer
-    puts "Welcome to Pizza Maker!".colorize(:green)
+    puts "Welcome to Pizza Maker!".colorize(:green).bold
   end
 
   def ask_for_customer_nane
-    print "Please enter your name: ".colorize(:white)
+    print "Please enter your name:".colorize(:white).underline
     get_customer_selection
   end
 
@@ -16,7 +16,7 @@ attr_accessor :id,:new_pizza,:customer_name
   end
 
   def offer_specialty_or_custom_build_pizza(customer_name)
-    puts "Hello #{customer_name}! Would you like to select a specialty pizza or build your own?"
+    puts "Hello #{customer_name}! Would you like to select a specialty pizza or build your own?".colorize(:red).blink
   end
 
   def determine_customer_selection
@@ -32,9 +32,9 @@ attr_accessor :id,:new_pizza,:customer_name
   end
 
   def show_menu_selection
-    puts "Please enter in 1 if you like a specialty, or 2 if you like to build your own"
-    puts "1. Specialty"
-    puts "\n2. Custom"
+    puts "Please enter in 1 if you like a specialty, or 2 if you like to build your own".colorize(:green)
+    puts "1. Specialty".colorize(:white)
+    puts "\n2. Custom".colorize(:red)
   end
 
 
@@ -67,7 +67,6 @@ attr_accessor :id,:new_pizza,:customer_name
   def display_special_menu
     valid_menu_options = ["1","2","3","4"]
     counter = 0
-    confirm_specialty_selection = ""
     puts "Here is our Specialty Menu. Please select a number."
 
     Pizza.all.each do |pizza|
@@ -90,19 +89,9 @@ attr_accessor :id,:new_pizza,:customer_name
         end
       end
       specialty_selection = get_customer_selection
+
     end
-    topping_list(specialty_selection)
-    puts "Do you want this pizza? Please enter 'yes' / 'no'"
-    confirm_specialty_selection = get_customer_selection
-    if confirm_specialty_selection == "yes"
-      puts "Sweetza! You have your pizza."
-      where_to_next
-    elsif confirm_specialty_selection == "no"
-      where_to_next
-    else
-      puts "Please try again, you've made a wrong selection"
-      display_special_menu
-    end
+    # customer_selection
   end
 
   def display_custom_menu
@@ -112,7 +101,7 @@ attr_accessor :id,:new_pizza,:customer_name
     @new_pizza = Pizza.create(name: "Custom Pizza")
 
     while topping_selection != "done"
-      puts "Please select the number of the topping you want to add to your pizza!"
+      puts "Please select the number of the toppings you want to add to your pizza!".colorize(:green).bold
       puts "Enter 'done' when you are finished"
 
       Topping.all.each do |topping|
@@ -163,11 +152,11 @@ attr_accessor :id,:new_pizza,:customer_name
 
   end
 
-  def topping_list(specialty_selection)
-    @id = specialty_selection.to_i
+  def topping_list(pizza_selection)
+    @id = pizza_selection.to_i
     puts "You selected #{Pizza.find(@id).name}! These are the toppings on the pizza:"
-    selected_specialty_pizza = Pizza.all.find(@id).toppings
-    selected_specialty_pizza.map do |topping|
+    var = Pizza.all.find(@id).toppings
+    var.map do |topping|
       puts topping.name.to_s
     end
   end
@@ -182,7 +171,7 @@ attr_accessor :id,:new_pizza,:customer_name
   end
 
   def no_naming
-    puts "Pizza's don't need no name anyway! Here is what's on your pizza:"
+    puts "Pizzas don't need a name anyway! Here is what's on your pizza:".colorize(:green).bold
     puts @new_pizza.toppings.map {|topping| topping.name}
   end
 
@@ -193,21 +182,18 @@ attr_accessor :id,:new_pizza,:customer_name
   end
 
   def where_to_next
-    puts "Would you like another pizza, go back to the main menu, or end your session?"
-    puts "1. Get a specialty pizza"
-    puts "\n2. Make a new custom pizza"
+    puts "Would you like to create a new pizza or go back to the main menu?"
+    puts "1. Make a new custom pizza"
+    puts "\n2. Get a specialty pizza"
     puts "\n3. Go back to the main menu"
-    puts "\n4. End your pizza making session"
     menu_input = get_customer_selection
       if menu_input == '1'
-        display_special_menu
+        display_custom_menu
       elsif menu_input == '2'
         # show_menu_selection
-        display_custom_menu
+        display_special_menu
       elsif menu_input == '3'
         run
-      elsif menu_input == '4'
-        raise "The program has ended"
       end
   end
 
