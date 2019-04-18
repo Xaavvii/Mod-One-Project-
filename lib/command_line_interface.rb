@@ -16,6 +16,7 @@ attr_accessor :id,:new_pizza
   end
 
   def show_menu_selection
+    puts "Please enter in 1 if you like a specialty, or 2 if you like to build your own"
     puts "1. Specialty"
     puts "\n2. Custom"
   end
@@ -25,26 +26,18 @@ attr_accessor :id,:new_pizza
   end
 
   def display_special_menu
+    counter = 0
     puts "Here is our Speciality Menu. Please select a number."
 
     Pizza.all.each do |pizza|
-      array = []
-      array << "#{pizza.id}. #{pizza.name}"
-      puts array[0]
-      puts array[1]
-      puts array[2]
-      puts array[3]
+      puts "#{pizza.id}. #{pizza.name}"
+      counter += 1
+      if counter >= 4
+        break
       end
     end
-
-  def topping_list(pizza_selection)
-    @id = pizza_selection.to_i
-    puts "You selected #{Pizza.find(@id).name}! These are the toppings on the pizza:"
-    var = Pizza.all.find(@id).toppings
-    var.map do |topping|
-      puts topping.name.to_s
-    end
   end
+
 
   def display_custom_menu
     topping_selection = ""
@@ -69,60 +62,55 @@ attr_accessor :id,:new_pizza
     pizza
   end
 
+  def determine_customer_selection
+    valid_menu_options = ["1","2"]
+    show_menu_selection
+    customer_selection = get_customer_selection
+    while !valid_menu_options.include?(customer_selection)
+        puts "Please try again, you've made a wrong selection"
+        show_menu_selection
+        customer_selection = get_customer_selection
+    end
+    customer_selection
+  end
+
+  def determine_speciality_or_custom(customer_selection)
+    if customer_selection == "1"
+      display_special_menu
+    elsif customer_selection == "2"
+      display_custom_menu
+    end
+    customer_selection = get_customer_selection
+  end
+
+  def determine_pizza_selection(pizza_selection)
+    valid_menu_options = ["1","2","3","4"]
+    valid_menu_options
+  end
+
+  def topping_list(pizza_selection)
+    @id = pizza_selection.to_i
+    puts "You selected #{Pizza.find(@id).name}! These are the toppings on the pizza:"
+    var = Pizza.all.find(@id).toppings
+    var.map do |topping|
+      puts topping.name.to_s
+    end
+  end
+
   def create_pizza
     custom_pizza = Pizza.new(name: null)
     PizzaTopping.new(pizza_id: custom_pizza.id, topping_id: 1)
   end
 
-  def determine_customer_selection(customer_selection)
-    if customer_selection == "1"
-      display_special_menu
-    elsif customer_selection == "2"
-      display_custom_menu
-    else
-      puts "Wrong input, please try again."
-    end
-    customer_selection
-  end
-
-  def determine_pizza_selection(pizza_selection)
-    if pizza_selection.to_i <= Pizza.all.length
-
-    else
-      puts "Wrong input, please try again."
-    end
-  end
-
-
   def run
-    customer_selection = ""
-    pizza_selection = ""
     welcome_customer
     customer_name = ask_for_customer_nane
-
-    until customer_selection == "1" || customer_selection == "2" do
-      offer_specialty_or_custom_build_pizza(customer_name)
-      show_menu_selection
-      customer_selection = get_customer_selection
-      until pizza_selection == "1" || pizza_selection == "2" || pizza_selection == "3" || pizza_selection == "4" do
-        determine_customer_selection(customer_selection)
-        pizza_selection = get_customer_selection
-        valid_pizza_options = ["1", "2", "3", "4"]
-        if !valid_pizza_options.include?(pizza_selection)
-          raise "Alex"
-          puts "Wrong input, please try again!!!!"
-        end
-      end
-    end
-
-    if customer_selection == "1"
-      topping_list(pizza_selection)
-    elsif customer_selection == "2"
-      puts "Sorry, custom menu not available"
-    end
-    #
-    # binding.pry
+    offer_specialty_or_custom_build_pizza(customer_name)
+    customer_selection = determine_customer_selection
+    is = determine_speciality_or_custom(customer_selection)
 
 
+
+    binding.pry
   end
 end
