@@ -48,8 +48,21 @@ attr_accessor :id,:new_pizza
   end
 
   def no_naming
-    puts "Pizza's don't need no name anyway! Here is what's on your pizza:"
+    puts "Pizza's don't need a name anyway! Here is what's on your pizza:"
     puts @new_pizza.toppings.map {|topping| topping.name}
+  end
+
+  def where_to_next
+    puts "Would you like to create a new pizza or go back to the main menu?"
+    puts "1. Make a new pizza"
+    puts "\n2. Go back to the main menu"
+    menu_input = gets.chomp
+      if menu_input == '1'
+        display_custom_menu
+      elsif menu_input == '2'
+        show_menu_selection
+  end
+
   end
 
   def display_custom_menu
@@ -78,10 +91,19 @@ attr_accessor :id,:new_pizza
         elsif yes_no == 'no'
           no_naming
         end
+          # puts "Would you like to create a new pizza or go back to the main menu?"
+          # puts "1. Make a new pizza"
+          # puts "\n2. Go back to the main menu"
+          # menu_input = gets.chomp
+          #   if menu_input == '1'
+          #     display_custom_menu
+          #   elsif menu_input == '2'
+          #     show_menu_selection
+          where_to_next
       end
     end
 
-    @new_pizza
+    # @new_pizza
   end
 
   def determine_customer_selection
