@@ -1,6 +1,6 @@
 class CommandLineInterface
 
-attr_accessor :id,:new_pizza
+attr_accessor :id,:new_pizza,:customer_name
 
   def welcome_customer
     puts "Welcome to Pizza Maker!"
@@ -95,6 +95,7 @@ attr_accessor :id,:new_pizza
 
   def display_custom_menu
     valid_menu_options = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14", "done"]
+    selection_array = []
     topping_selection = ""
     @new_pizza = Pizza.create(name: "Custom Pizza")
 
@@ -102,11 +103,16 @@ attr_accessor :id,:new_pizza
       puts "Please select the number of the topping you want to add to your pizza!"
       puts "Enter 'done' when you are finished"
 
-      Topping.all.map do |topping|
-        puts "#{topping.id}. #{topping.name}"
+      Topping.all.each do |topping|
+        if !selection_array.include?(topping.id.to_s)
+          puts "#{topping.id}. #{topping.name}"
+        end
+        # puts "#{topping.id}. #{topping.name}"
       end
 
       topping_selection = get_customer_selection
+
+
       while !valid_menu_options.include?(topping_selection)
         puts "Please try again, you've made a wrong selection"
         puts "Please select the number of the topping you want to add to your pizza!"
@@ -123,6 +129,7 @@ attr_accessor :id,:new_pizza
         PizzaTopping.new(pizza_id: @new_pizza.id, topping_id: topping.id)
         @new_pizza.toppings << topping
         puts "#{topping.name} has/have been added to your pizza."
+        selection_array << topping_selection
       else
         puts "Do you want to name your pizza? Please enter 'yes' / 'no'"
         yes_no = gets.chomp
@@ -131,6 +138,7 @@ attr_accessor :id,:new_pizza
         elsif yes_no == 'no'
           no_naming
         end
+        where_to_next
       end
       topping_selection
     end
@@ -171,10 +179,31 @@ attr_accessor :id,:new_pizza
     PizzaTopping.new(pizza_id: custom_pizza.id, topping_id: 1)
   end
 
+  def where_to_next
+    puts "Would you like to create a new pizza or go back to the main menu?"
+    puts "1. Make a new custom pizza"
+    puts "\n2. Get a speciality pizza"
+    puts "\n3. Go back to the main menu"
+    menu_input = get_customer_selection
+      if menu_input == '1'
+        display_custom_menu
+      elsif menu_input == '2'
+        # show_menu_selection
+        display_special_menu
+      elsif menu_input == '3'
+        run
+      end
+  end
+
+
   def run
+
     welcome_customer
-    customer_name = ask_for_customer_nane
-    offer_specialty_or_custom_build_pizza(customer_name)
+    while @customer_name == nil
+      @customer_name = ask_for_customer_nane
+    end
+
+    offer_specialty_or_custom_build_pizza(@customer_name)
     customer_selection = determine_customer_selection
     was_specialty_selected = determine_speciality_or_custom(customer_selection)
     menu_selection = display_menu(was_specialty_selected)
