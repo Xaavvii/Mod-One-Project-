@@ -6,5 +6,6 @@ gem "sqlite3"
 gem "pry"
 gem 'rake'
 gem 'require_all'
+gem 'colorize'
 
 gem 'sinatra-activerecord'
