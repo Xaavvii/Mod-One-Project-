@@ -7,7 +7,7 @@ attr_accessor :id,:new_pizza,:customer_name
   end
 
   def ask_for_customer_nane
-    print "Please enter your name:".colorize(:white)
+    print "Please enter your name: ".colorize(:white)
     get_customer_selection
   end
 
@@ -67,6 +67,7 @@ attr_accessor :id,:new_pizza,:customer_name
   def display_special_menu
     valid_menu_options = ["1","2","3","4"]
     counter = 0
+    confirm_specialty_selection = ""
     puts "Here is our Specialty Menu. Please select a number."
 
     Pizza.all.each do |pizza|
@@ -89,9 +90,19 @@ attr_accessor :id,:new_pizza,:customer_name
         end
       end
       specialty_selection = get_customer_selection
-
     end
-    # customer_selection
+    topping_list(specialty_selection)
+    puts "Do you want this pizza? Please enter 'yes' / 'no'"
+    confirm_specialty_selection = get_customer_selection
+    if confirm_specialty_selection == "yes"
+      puts "Sweetza! You have your pizza."
+      where_to_next
+    elsif confirm_specialty_selection == "no"
+      where_to_next
+    else
+      puts "Please try again, you've made a wrong selection"
+      display_special_menu
+    end
   end
 
   def display_custom_menu
@@ -152,11 +163,11 @@ attr_accessor :id,:new_pizza,:customer_name
 
   end
 
-  def topping_list(pizza_selection)
-    @id = pizza_selection.to_i
+  def topping_list(specialty_selection)
+    @id = specialty_selection.to_i
     puts "You selected #{Pizza.find(@id).name}! These are the toppings on the pizza:"
-    var = Pizza.all.find(@id).toppings
-    var.map do |topping|
+    selected_specialty_pizza = Pizza.all.find(@id).toppings
+    selected_specialty_pizza.map do |topping|
       puts topping.name.to_s
     end
   end
@@ -182,18 +193,21 @@ attr_accessor :id,:new_pizza,:customer_name
   end
 
   def where_to_next
-    puts "Would you like to create a new pizza or go back to the main menu?"
-    puts "1. Make a new custom pizza"
-    puts "\n2. Get a specialty pizza"
+    puts "Would you like another pizza, go back to the main menu, or end your session?"
+    puts "1. Get a specialty pizza"
+    puts "\n2. Make a new custom pizza"
     puts "\n3. Go back to the main menu"
+    puts "\n4. End your pizza making session"
     menu_input = get_customer_selection
       if menu_input == '1'
-        display_custom_menu
+        display_special_menu
       elsif menu_input == '2'
         # show_menu_selection
-        display_special_menu
+        display_custom_menu
       elsif menu_input == '3'
         run
+      elsif menu_input == '4'
+        raise "The program has ended"
       end
   end
 
@@ -219,7 +233,7 @@ attr_accessor :id,:new_pizza,:customer_name
     offer_specialty_or_custom_build_pizza(@customer_name)
     customer_selection = determine_customer_selection
     was_specialty_selected = determine_specialty_or_custom(customer_selection)
-    menu_selection = display_menu(was_specialty_selected)
+    display_menu(was_specialty_selected)
 
 
     binding.pry
