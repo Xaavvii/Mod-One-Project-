@@ -3,16 +3,16 @@ class CommandLineInterface
 attr_accessor :id,:new_pizza,:customer_name
 
   def welcome_customer
-    puts "Welcome to Pizza Maker!"
+    puts "Welcome to Pizza Maker!".colorize(:green)
   end
 
   def ask_for_customer_nane
-    print "Please enter your name: "
+    print "Please enter your name:".colorize(:white)
     get_customer_selection
   end
 
   def get_customer_selection
-    gets.chomp
+    gets.chomp.colorize(:red)
   end
 
   def offer_specialty_or_custom_build_pizza(customer_name)
