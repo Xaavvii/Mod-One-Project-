@@ -38,10 +38,23 @@ attr_accessor :id,:new_pizza
     end
   end
 
+  def pizza_naming
+  puts "Please name your pizza:"
+  new_name = gets.chomp
+  @new_pizza.name = new_name
+  @new_pizza.save
+  # binding.pry
+  puts "Sweetza! You named your pizza #{new_name}"
+  end
+
+  def no_naming
+    puts "Pizza's don't need no name anyway! Here is what's on your pizza:"
+    puts @new_pizza.toppings.map {|topping| topping.name}
+  end
 
   def display_custom_menu
     topping_selection = ""
-    @new_pizza = Pizza.create(name: "custom")
+    @new_pizza = Pizza.create(name: "Custom Pizza")
 
     while topping_selection != "done"
       puts "Please select the number of the topping you want to add to your pizza!"
@@ -55,11 +68,20 @@ attr_accessor :id,:new_pizza
       if topping_selection != "done"
         topping = Topping.find(topping_selection)
         PizzaTopping.new(pizza_id: @new_pizza.id, topping_id: topping.id)
+        @new_pizza.toppings << topping
         puts "#{topping.name} has/have been added to your pizza."
+      else
+        puts "Do you want to name your pizza? Please enter 'yes' / 'no'"
+        yes_no = gets.chomp
+        if yes_no == 'yes'
+          pizza_naming
+        elsif yes_no == 'no'
+          no_naming
+        end
       end
     end
 
-    pizza
+    @new_pizza
   end
 
   def determine_customer_selection
