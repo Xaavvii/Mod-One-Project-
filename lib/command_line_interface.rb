@@ -12,7 +12,7 @@ attr_accessor :id,:new_pizza,:customer_name
   end
 
   def get_customer_selection
-    gets.chomp.colorize(:red)
+    gets.chomp
   end
 
   def offer_specialty_or_custom_build_pizza(customer_name)
