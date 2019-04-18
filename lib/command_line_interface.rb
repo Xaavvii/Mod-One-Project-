@@ -38,7 +38,7 @@ attr_accessor :id,:new_pizza,:customer_name
   end
 
 
-  def determine_speciality_or_custom(customer_selection)
+  def determine_specialty_or_custom(customer_selection)
     if customer_selection == "1"
       is_specialty_selected = true
       # display_special_menu
@@ -67,7 +67,7 @@ attr_accessor :id,:new_pizza,:customer_name
   def display_special_menu
     valid_menu_options = ["1","2","3","4"]
     counter = 0
-    puts "Here is our Speciality Menu. Please select a number."
+    puts "Here is our Specialty Menu. Please select a number."
 
     Pizza.all.each do |pizza|
       puts "#{pizza.id}. #{pizza.name}"
@@ -76,11 +76,11 @@ attr_accessor :id,:new_pizza,:customer_name
         break
       end
     end
-    customer_selection = get_customer_selection
-    while !valid_menu_options.include?(customer_selection)
+    specialty_selection = get_customer_selection
+    while !valid_menu_options.include?(specialty_selection)
       counter = 0
       puts "Please try again, you've made a wrong selection"
-      puts "Here is our Speciality Menu. Please select a number."
+      puts "Here is our specialty Menu. Please select a number."
       Pizza.all.each do |pizza|
         puts "#{pizza.id}. #{pizza.name}"
         counter += 1
@@ -88,9 +88,10 @@ attr_accessor :id,:new_pizza,:customer_name
           break
         end
       end
-      customer_selection = get_customer_selection
+      specialty_selection = get_customer_selection
+
     end
-    customer_selection
+    # customer_selection
   end
 
   def display_custom_menu
@@ -118,10 +119,11 @@ attr_accessor :id,:new_pizza,:customer_name
         puts "Please select the number of the topping you want to add to your pizza!"
         puts "Enter 'done' when you are finished"
 
-        Topping.all.map do |topping|
-          puts "#{topping.id}. #{topping.name}"
+        Topping.all.each do |topping|
+          if !selection_array.include?(topping.id.to_s)
+            puts "#{topping.id}. #{topping.name}"
+          end
         end
-
         topping_selection = get_customer_selection
       end
       if topping_selection != "done"
@@ -182,7 +184,7 @@ attr_accessor :id,:new_pizza,:customer_name
   def where_to_next
     puts "Would you like to create a new pizza or go back to the main menu?"
     puts "1. Make a new custom pizza"
-    puts "\n2. Get a speciality pizza"
+    puts "\n2. Get a specialty pizza"
     puts "\n3. Go back to the main menu"
     menu_input = get_customer_selection
       if menu_input == '1'
@@ -195,6 +197,17 @@ attr_accessor :id,:new_pizza,:customer_name
       end
   end
 
+  def topping_helper
+    PizzaTopping.all.map do |pizza_topping|
+      pizza_topping.topping_id
+    end
+  end
+
+  def most_popular
+    popular = topping_helper.group_by(&:to_s).values.max_by(&:size).try(:first)
+    pop_top = Topping.find(popular).name
+    puts "The most popular topping is #{pop_top}."
+  end
 
   def run
 
@@ -205,7 +218,7 @@ attr_accessor :id,:new_pizza,:customer_name
 
     offer_specialty_or_custom_build_pizza(@customer_name)
     customer_selection = determine_customer_selection
-    was_specialty_selected = determine_speciality_or_custom(customer_selection)
+    was_specialty_selected = determine_specialty_or_custom(customer_selection)
     menu_selection = display_menu(was_specialty_selected)
 
 
