@@ -3,20 +3,20 @@ class CommandLineInterface
 attr_accessor :id,:new_pizza,:customer_name
 
   def welcome_customer
-    puts "Welcome to Pizza Maker!".colorize(:green)
+    puts "Welcome to Pizza Maker!".colorize(:green).bold
   end
 
   def ask_for_customer_nane
-    print "Please enter your name:".colorize(:white)
+    print "Please enter your name:".colorize(:white).underline
     get_customer_selection
   end
 
   def get_customer_selection
-    gets.chomp.colorize(:red)
+    gets.chomp
   end
 
   def offer_specialty_or_custom_build_pizza(customer_name)
-    puts "Hello #{customer_name}! Would you like to select a specialty pizza or build your own?"
+    puts "Hello #{customer_name}! Would you like to select a specialty pizza or build your own?".colorize(:red).blink
   end
 
   def determine_customer_selection
@@ -32,9 +32,9 @@ attr_accessor :id,:new_pizza,:customer_name
   end
 
   def show_menu_selection
-    puts "Please enter in 1 if you like a specialty, or 2 if you like to build your own"
-    puts "1. Specialty"
-    puts "\n2. Custom"
+    puts "Please enter in 1 if you like a specialty, or 2 if you like to build your own".colorize(:green)
+    puts "1. Specialty".colorize(:white)
+    puts "\n2. Custom".colorize(:red)
   end
 
 
@@ -100,7 +100,7 @@ attr_accessor :id,:new_pizza,:customer_name
     @new_pizza = Pizza.create(name: "Custom Pizza")
 
     while topping_selection != "done"
-      puts "Please select the number of the topping you want to add to your pizza!"
+      puts "Please select the number of the topping you want to add to your pizza!".colorize(:green).bold
       puts "Enter 'done' when you are finished"
 
       Topping.all.each do |topping|

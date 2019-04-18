@@ -2,12 +2,12 @@ require_relative "../lib/models/pizza.rb"
 require_relative "../lib/models/topping.rb"
 
 #Toppings
-beef = Topping.find_or_create_by(name: "Beef".colorize(:brown)) #1
-extra_cheese = Topping.find_or_create_by(name: "Extra Cheese".colorize(:yellow))#2
-sausage = Topping.find_or_create_by(name: "Sausage".colorize(:brown)) #3
-bacone = Topping.find_or_create_by(name: "Bacon".colorize(:red)) #4
-onions = Topping.find_or_create_by(name: "Onions".colorize(:white)) #5
-mushrooms = Topping.find_or_create_by(name: "Mushrooms".colorize) #6
+beef = Topping.find_or_create_by(name: "Beef") #1
+extra_cheese = Topping.find_or_create_by(name: "Extra Cheese")#2
+sausage = Topping.find_or_create_by(name: "Sausage") #3
+bacone = Topping.find_or_create_by(name: "Bacon") #4
+onions = Topping.find_or_create_by(name: "Onions") #5
+mushrooms = Topping.find_or_create_by(name: "Mushrooms") #6
 pepperoni = Topping.find_or_create_by(name: "Pepperoni") #7
 black_olives = Topping.find_or_create_by(name: "Black Olives") #8
 green_peppers = Topping.find_or_create_by(name: "Green Peppers") #9
