@@ -37,6 +37,21 @@ attr_accessor :id,:new_pizza
       end
     end
 
+    def pizza_naming
+      puts "Please name your pizza:"
+      new_name = gets.chomp
+      @new_pizza.name = new_name
+      @new_pizza.save
+      # binding.pry
+      puts "Sweetza! You named your pizza #{new_name}"
+    end
+
+    def no_naming
+      puts "Pizza's don't need no name anyway! Here is what's on your pizza:"
+      puts @new_pizza.toppings.map {|topping| topping.name}
+    end
+
+
   def topping_list(pizza_selection)
     @id = pizza_selection.to_i
     puts "You selected #{Pizza.find(@id).name}! These are the toppings on the pizza:"
@@ -68,16 +83,20 @@ attr_accessor :id,:new_pizza
         puts "Do you want to name your pizza? Please enter 'yes' / 'no'"
         yes_no = gets.chomp
           if yes_no == 'yes'
-            puts "Please name your pizza:"
-            new_name = gets.chomp
-            @new_pizza.name = new_name
-            @new_pizza.save
-            # binding.pry
-            puts "Sweetza! You named your pizza #{new_name}"
+            pizza_naming
+            # puts "Please name your pizza:"
+            # new_name = gets.chomp
+            # @new_pizza.name = new_name
+            # @new_pizza.save
+            # # binding.pry
+            # puts "Sweetza! You named your pizza #{new_name}"
+          elsif yes_no == 'no'
+            no_naming
+            # puts "Pizza's don't need no name anyway! Here is what's on your pizza:"
+            # puts @new_pizza.toppings.map {|topping| topping.name}
           else
-            puts "Pizza's don't need no name anyway! Here is what's on your pizza:"
-            puts @new_pizza.toppings.map {|topping| topping.name}
-            
+            puts
+
             # binding.pry
           end
       end
