@@ -219,7 +219,7 @@ attr_accessor :id,:new_pizza,:customer_name
     offer_specialty_or_custom_build_pizza(@customer_name)
     customer_selection = determine_customer_selection
     was_specialty_selected = determine_specialty_or_custom(customer_selection)
-    menu_selection = display_menu(was_specialty_selected)
+    display_menu(was_specialty_selected)
 
 
     binding.pry
