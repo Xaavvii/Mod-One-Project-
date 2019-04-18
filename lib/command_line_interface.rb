@@ -7,7 +7,7 @@ attr_accessor :id,:new_pizza,:customer_name
   end
 
   def ask_for_customer_nane
-    print "Please enter your name:".colorize(:white)
+    print "Please enter your name :".colorize(:white)
     get_customer_selection
   end
 
