@@ -1,4 +1,4 @@
-class CommandLineInterface
+# class CommandLineInterface
 
 attr_accessor :id,:new_pizza
 
@@ -125,4 +125,4 @@ attr_accessor :id,:new_pizza
 
 
   end
-end
+# end
