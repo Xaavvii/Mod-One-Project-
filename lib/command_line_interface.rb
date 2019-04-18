@@ -54,7 +54,7 @@ attr_accessor :id,:new_pizza
       topping_selection = gets.chomp
       if topping_selection != "done"
         topping = Topping.find(topping_selection)
-        PizzaTopping.new(pizza_id: pizza.id, topping_id: topping.id)
+        PizzaTopping.new(pizza_id: @new_pizza.id, topping_id: topping.id)
         puts "#{topping.name} has/have been added to your pizza."
       end
     end
@@ -111,6 +111,6 @@ attr_accessor :id,:new_pizza
 
 
 
-    binding.pry
+    # binding.pry
   end
 end
