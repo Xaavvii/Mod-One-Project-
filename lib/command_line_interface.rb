@@ -147,14 +147,15 @@ attr_accessor :id,:new_pizza,:customer_name
         puts "#{topping.name} has/have been added to your pizza.".colorize(:orange).bold
         selection_array << topping_selection
       else
-        puts "Do you want to name your pizza? Please enter 'yes' / 'no'"
-        yes_no = gets.chomp
-        if yes_no == 'yes'
-          pizza_naming
-        elsif yes_no == 'no'
-          no_naming
-        end
-        where_to_next
+        # puts "Do you want to name your pizza? Please enter 'yes' / 'no'"
+        # yes_no = gets.chomp
+        # if yes_no == 'yes'
+        #   pizza_naming
+        # elsif yes_no == 'no'
+        #   no_naming
+        # end
+        # where_to_next
+        naming_pizza_question
       end
       topping_selection
     end
@@ -162,6 +163,19 @@ attr_accessor :id,:new_pizza,:customer_name
     # @new_pizza
   end
 
+  def naming_pizza_question
+    puts "Do you want to name your pizza? Please enter 'yes' / 'no'"
+    yes_no = gets.chomp
+    if yes_no == 'yes'
+      pizza_naming
+    elsif yes_no == 'no'
+      no_naming
+    else
+      puts "Please try again, you've made a wrong selection".colorize(:red).blink
+      naming_pizza_question
+    end
+    where_to_next
+  end
   def complete_order
 
   end
@@ -197,10 +211,10 @@ attr_accessor :id,:new_pizza,:customer_name
 
   def where_to_next
     puts "Would you like another pizza, go back to the main menu, or end your session?"
-    puts "1. Get a specialty pizza".colorize(:green).swap
-    puts "\n2. Make a new custom pizza".colorize(:white).swap
-    puts "\n3. Go back to the main menu".colorize(:white).swap
-    puts "\n4. End your pizza making session".colorize(:red).swap
+    puts "1. Get a specialty pizza"
+    puts "\n2. Make a new custom pizza"
+    puts "\n3. Go back to the main menu"
+    puts "\n4. End your pizza making session"
     menu_input = get_customer_selection
       if menu_input == '1'
         display_special_menu
