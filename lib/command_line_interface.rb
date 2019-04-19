@@ -113,6 +113,7 @@ attr_accessor :id,:new_pizza,:customer_name
 
     while topping_selection != "done"
       puts "Please select the number of the topping you want to add to your pizza!"
+      most_popular
       puts "Enter 'done' when you are finished"
 
       Topping.all.each do |topping|
