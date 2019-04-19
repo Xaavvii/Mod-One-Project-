@@ -3,11 +3,11 @@ class CommandLineInterface
 attr_accessor :id,:new_pizza,:customer_name
 
   def welcome_customer
-    puts "Welcome to Pizza Maker!".colorize(:green)
+    puts "Welcome to Pizza Maker!".colorize(:green).bold
   end
 
   def ask_for_customer_nane
-    print "Please enter your name :".colorize(:white)
+    print "Please enter your name :".colorize(:white).underline
     get_customer_selection
   end
 
@@ -16,7 +16,7 @@ attr_accessor :id,:new_pizza,:customer_name
   end
 
   def offer_specialty_or_custom_build_pizza(customer_name)
-    puts "Hello #{customer_name}! Would you like to select a specialty pizza or build your own?"
+    puts "Hello #{customer_name}! Would you like to select a specialty pizza or build your own?".colorize(:yellow)
   end
 
   def determine_customer_selection
@@ -24,7 +24,7 @@ attr_accessor :id,:new_pizza,:customer_name
     show_menu_selection
     customer_selection = get_customer_selection
     while !valid_menu_options.include?(customer_selection)
-      puts "Please try again, you've made a wrong selection"
+      puts "Please try again, you've made a wrong selection".colorize(:red).blink
       show_menu_selection
       customer_selection = get_customer_selection
     end
@@ -32,7 +32,7 @@ attr_accessor :id,:new_pizza,:customer_name
   end
 
   def show_menu_selection
-    puts "Please enter in 1 if you like a specialty, or 2 if you like to build your own"
+    puts "Please enter in 1 to see our specialty pizzas, or 2 if you would like to build your own".colorize(:blue)
     puts "1. Specialty"
     puts "\n2. Custom"
   end
@@ -80,8 +80,8 @@ attr_accessor :id,:new_pizza,:customer_name
     specialty_selection = get_customer_selection
     while !valid_menu_options.include?(specialty_selection)
       counter = 0
-      puts "Please try again, you've made a wrong selection"
-      puts "Here is our specialty Menu. Please select a number."
+      puts "Please try again, you've made a wrong selection".colorize(:red).blink
+      puts "Here is our specialty Menu. Please select a number.".colorize(:green).bold
       Pizza.all.each do |pizza|
         puts "#{pizza.id}. #{pizza.name}"
         counter += 1
@@ -91,6 +91,9 @@ attr_accessor :id,:new_pizza,:customer_name
       end
       specialty_selection = get_customer_selection
     end
+    specialty_topping_loop(specialty_selection)
+  end
+  def specialty_topping_loop(specialty_selection)
     topping_list(specialty_selection)
     puts "Do you want this pizza? Please enter 'yes' / 'no'"
     confirm_specialty_selection = get_customer_selection
@@ -100,11 +103,10 @@ attr_accessor :id,:new_pizza,:customer_name
     elsif confirm_specialty_selection == "no"
       where_to_next
     else
-      puts "Please try again, you've made a wrong selection"
-      display_special_menu
+      puts "Please try again, you've made a wrong selection".colorize(:red).blink
+      specialty_topping_loop(specialty_selection)
     end
   end
-
   def display_custom_menu
     valid_menu_options = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14", "done"]
     selection_array = []
@@ -114,7 +116,7 @@ attr_accessor :id,:new_pizza,:customer_name
     while topping_selection != "done"
       puts "Please select the number of the topping you want to add to your pizza!"
       most_popular
-      puts "Enter 'done' when you are finished"
+      puts "Enter 'done'.colorize(:red).blink when you are finished"
 
       Topping.all.each do |topping|
         if !selection_array.include?(topping.id.to_s)
@@ -127,9 +129,9 @@ attr_accessor :id,:new_pizza,:customer_name
 
 
       while !valid_menu_options.include?(topping_selection)
-        puts "Please try again, you've made a wrong selection"
-        puts "Please select the number of the topping you want to add to your pizza!"
-        puts "Enter 'done' when you are finished"
+        puts "Please try again, you've made a wrong selection".colorize(:red).blink
+        puts "Please select the number of the topping you want to add to your pizza!".colorize(:white)
+        puts "Enter 'done' when you are finished".colorize(:green).underline
 
         Topping.all.each do |topping|
           if !selection_array.include?(topping.id.to_s)
@@ -142,7 +144,7 @@ attr_accessor :id,:new_pizza,:customer_name
         topping = Topping.find(topping_selection)
         PizzaTopping.new(pizza_id: @new_pizza.id, topping_id: topping.id)
         @new_pizza.toppings << topping
-        puts "#{topping.name} has/have been added to your pizza."
+        puts "#{topping.name} has/have been added to your pizza.".colorize(:orange).bold
         selection_array << topping_selection
       else
         puts "Do you want to name your pizza? Please enter 'yes' / 'no'"
@@ -179,11 +181,11 @@ attr_accessor :id,:new_pizza,:customer_name
   @new_pizza.name = new_name
   @new_pizza.save
   # binding.pry
-  puts "Sweetza! You named your pizza #{new_name}"
+  puts "Sweetza! You named your pizza #{new_name}".colorize(:light_magenta).bold
   end
 
   def no_naming
-    puts "Pizza's don't need no name anyway! Here is what's on your pizza:"
+    puts "Pizza's don't need a name anyway! Here is what's on your pizza:".colorize(:magenta).bold
     puts @new_pizza.toppings.map {|topping| topping.name}
   end
 
@@ -195,10 +197,10 @@ attr_accessor :id,:new_pizza,:customer_name
 
   def where_to_next
     puts "Would you like another pizza, go back to the main menu, or end your session?"
-    puts "1. Get a specialty pizza"
-    puts "\n2. Make a new custom pizza"
-    puts "\n3. Go back to the main menu"
-    puts "\n4. End your pizza making session"
+    puts "1. Get a specialty pizza".colorize(:green).swap
+    puts "\n2. Make a new custom pizza".colorize(:white).swap
+    puts "\n3. Go back to the main menu".colorize(:white).swap
+    puts "\n4. End your pizza making session".colorize(:red).swap
     menu_input = get_customer_selection
       if menu_input == '1'
         display_special_menu
@@ -209,6 +211,9 @@ attr_accessor :id,:new_pizza,:customer_name
         run
       elsif menu_input == '4'
         raise "The program has ended"
+      else
+        puts "Please try again, you've made a wrong selection".colorize(:red).blink
+        where_to_next
       end
   end
 
@@ -221,7 +226,7 @@ attr_accessor :id,:new_pizza,:customer_name
   def most_popular
     popular = topping_helper.group_by(&:to_s).values.max_by(&:size).try(:first)
     pop_top = Topping.find(popular).name
-    puts "The most popular topping is #{pop_top}."
+    puts "The most popular topping is #{pop_top}.".colorize(:cyan).underline
   end
 
   def run
