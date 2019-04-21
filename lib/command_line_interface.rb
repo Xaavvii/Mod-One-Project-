@@ -165,7 +165,7 @@ attr_accessor :id,:new_pizza,:customer_name
 
   def naming_pizza_question
     puts "Do you want to name your pizza? Please enter 'yes' / 'no'"
-    yes_no = gets.chomp
+    yes_no = get_customer_selection
     if yes_no == 'yes'
       pizza_naming
     elsif yes_no == 'no'
@@ -191,7 +191,7 @@ attr_accessor :id,:new_pizza,:customer_name
 
   def pizza_naming
   puts "Please name your pizza:"
-  new_name = gets.chomp
+  new_name = get_customer_selection
   @new_pizza.name = new_name
   @new_pizza.save
   # binding.pry
